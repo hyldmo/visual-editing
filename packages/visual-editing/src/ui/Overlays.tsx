@@ -421,30 +421,33 @@ export const Overlays: FunctionComponent<{
                 />
                 {contextMenu && <ContextMenu {...contextMenu} onDismiss={closeContextMenu} />}
                 {!isDragging &&
-                  elementsToRender.map(({id, focused, hovered, rect, sanity, dragDisabled}) => {
-                    const draggable =
-                      !dragDisabled &&
-                      elements.some((e) =>
-                        'id' in e.sanity && 'id' in sanity
-                          ? sanityNodesExistInSameArray(e.sanity, sanity) &&
-                            e.sanity.path !== sanity.path
-                          : false,
-                      )
+                  elementsToRender.map(
+                    ({id, element, focused, hovered, rect, sanity, dragDisabled}) => {
+                      const draggable =
+                        !dragDisabled &&
+                        elements.some((e) =>
+                          'id' in e.sanity && 'id' in sanity
+                            ? sanityNodesExistInSameArray(e.sanity, sanity) &&
+                              e.sanity.path !== sanity.path
+                            : false,
+                        )
 
-                    return (
-                      <ElementOverlay
-                        key={id}
-                        focused={focused}
-                        hovered={hovered}
-                        node={sanity}
-                        rect={rect}
-                        showActions={!inFrame}
-                        draggable={draggable}
-                        isDragging={isDragging || dragMinimapTransition}
-                        wasMaybeCollapsed={focused && wasMaybeCollapsed}
-                      />
-                    )
-                  })}
+                      return (
+                        <ElementOverlay
+                          key={id}
+                          element={element}
+                          focused={focused}
+                          hovered={hovered}
+                          node={sanity}
+                          rect={rect}
+                          showActions={!inFrame}
+                          draggable={draggable}
+                          isDragging={isDragging || dragMinimapTransition}
+                          wasMaybeCollapsed={focused && wasMaybeCollapsed}
+                        />
+                      )
+                    },
+                  )}
 
                 {isDragging && !dragMinimapTransition && (
                   <>
